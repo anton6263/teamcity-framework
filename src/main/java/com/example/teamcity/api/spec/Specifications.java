@@ -36,8 +36,10 @@ public class Specifications {
 
     public RequestSpecification unauthSpec() {
         var requestBuilder = reqSpecBuilder();
-        requestBuilder.setContentType(ContentType.JSON)
-                .setAccept(ContentType.JSON);
+        requestBuilder.setBaseUri("http://" + Config.getProperties("host"))
+                .setContentType(ContentType.JSON)
+                .setAccept(ContentType.JSON)
+                .build();
         return requestBuilder.build();
     }
 

@@ -11,9 +11,9 @@ import lombok.ToString;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = true)
 @ToString
-public class User {
+public class User extends BaseModel {
 
     private String username;
     private String password;
