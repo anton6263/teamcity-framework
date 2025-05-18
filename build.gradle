@@ -1,0 +1,24 @@
+plugins {
+    id 'java'
+}
+
+group = 'teamcity'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.testng:testng:7.8.0'
+    implementation 'io.rest-assured:rest-assured:5.4.0'
+    implementation 'commons-codec:commons-codec:1.15'
+
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
+}
+
+test {
+    useTestNG()
+}
