@@ -1,5 +1,7 @@
 package com.example.teamcity.api.spec;
 
+import com.example.teamcity.api.config.Config;
+import com.example.teamcity.api.models.User;
 import io.restassured.authentication.PreemptiveBasicAuthScheme;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.RequestLoggingFilter;
@@ -39,14 +41,14 @@ public class Specifications {
         return requestBuilder.build();
     }
 
-    public RequestSpecification authSpec() {
+    public RequestSpecification authSpec(User user) {
         var requestBuilder = reqSpecBuilder();
 
         PreemptiveBasicAuthScheme authScheme = new PreemptiveBasicAuthScheme();
-        authScheme.setUserName("admin");
-        authScheme.setPassword("admin");
+        authScheme.setUserName(user.getUsername());
+        authScheme.setPassword(user.getPassword());
 
-        requestBuilder.setBaseUri("http://192.168.31.92:8111")
+        requestBuilder.setBaseUri("http://" + Config.getProperties("host"))
                 .setContentType(ContentType.JSON)
                 .setAccept(ContentType.JSON)
                 .setAuth(authScheme)
