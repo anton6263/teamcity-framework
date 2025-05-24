@@ -14,27 +14,14 @@ import io.restassured.specification.RequestSpecification;
 
 public class Specifications {
 
-    private static Specifications spec;
-
-    private Specifications() {
-
-    }
-
-    public static Specifications getSpec() {
-        if (spec == null) {
-            spec = new Specifications();
-        }
-        return spec;
-    }
-
-    private RequestSpecBuilder reqSpecBuilder() {
+    private static RequestSpecBuilder reqSpecBuilder() {
         var requestBuild = new RequestSpecBuilder();
         requestBuild.addFilter(new RequestLoggingFilter());
         requestBuild.addFilter(new ResponseLoggingFilter());
         return requestBuild;
     }
 
-    public RequestSpecification unauthSpec() {
+    public static RequestSpecification unauthSpec() {
         var requestBuilder = reqSpecBuilder();
         requestBuilder.setBaseUri("http://" + Config.getProperties("host"))
                 .setContentType(ContentType.JSON)
@@ -43,12 +30,27 @@ public class Specifications {
         return requestBuilder.build();
     }
 
-    public RequestSpecification authSpec(User user) {
+    public static RequestSpecification authSpec(User user) {
         var requestBuilder = reqSpecBuilder();
 
         PreemptiveBasicAuthScheme authScheme = new PreemptiveBasicAuthScheme();
         authScheme.setUserName(user.getUsername());
         authScheme.setPassword(user.getPassword());
+
+        requestBuilder.setBaseUri("http://" + Config.getProperties("host"))
+                .setContentType(ContentType.JSON)
+                .setAccept(ContentType.JSON)
+                .setAuth(authScheme)
+                .build();
+        return requestBuilder.build();
+    }
+
+    public static RequestSpecification superUserAuthSpec() {
+        var requestBuilder = reqSpecBuilder();
+
+        PreemptiveBasicAuthScheme authScheme = new PreemptiveBasicAuthScheme();
+        authScheme.setUserName("");
+        authScheme.setPassword(Config.getProperties("superUserToken"));
 
         requestBuilder.setBaseUri("http://" + Config.getProperties("host"))
                 .setContentType(ContentType.JSON)
